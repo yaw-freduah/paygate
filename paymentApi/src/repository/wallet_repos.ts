@@ -14,21 +14,12 @@ class StudentRepo {
     }
 }
 
-
-
-class WalletRepository {
-  
-
-
-}
-
-
 export class TransactionRepository implements TransactionRepo{
      userCollection= db.collection("users");
      transactionCollection =db.collection("transactions");
    async FindByID(txnID: string):Promise<Transaction> {
        try {
-           let transaction:T
+           let transaction:Transaction
         let result=await (await this.transactionCollection.doc(txnID).get()).data();
         transaction= result as Transaction
       return transaction;
@@ -92,6 +83,3 @@ export class TransactionRepository implements TransactionRepo{
 
 
 
-export class PhoneMo {
-
-}

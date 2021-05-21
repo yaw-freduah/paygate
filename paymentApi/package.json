@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/crypto-js": "^4.0.1",
     "@types/firebase": "^3.2.1",
     "@types/nanoid": "^2.1.0",
     "@types/node": "^15.3.1",
@@ -7,10 +8,22 @@
   },
   "dependencies": {
     "apollo-server": "^2.24.1",
+    "crypto-js": "^4.0.0",
     "firebase": "^8.6.2",
     "firebase-admin": "^9.8.0",
     "graphql": "^15.5.0",
     "nanoid": "^3.1.23",
     "ts-node": "^9.1.1"
-  }
+  },
+  "name": "paymentapi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node public/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

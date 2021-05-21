@@ -108,7 +108,7 @@ import firebaseFirestore from 'firebase';
 
 		async checkPin(cvv:string):Promise<Boolean>{
 			let txt=this.decodePin(cvv)
-				let query=	await (await firebaseFirestore.firestore().collection("wallet").where("card.cardNumber","==",this.cardNumber).get())
+				let query=	 (await firebaseFirestore.firestore().collection("wallet").where("card.cardNumber","==",this.cardNumber).get())
 				if(query.docs.length==0){
 					throw Error("No Documents available");
 				}
@@ -122,6 +122,9 @@ import firebaseFirestore from 'firebase';
 			}
 		}
 
+
+
+		
 	}
 
 	class Transaction {
@@ -196,11 +199,6 @@ import firebaseFirestore from 'firebase';
 		bank="bank"
 	}
 
-
-	enum Carrier {
-		mtn,
-		airtel
-	}
 
 	
 	enum TxnType{
