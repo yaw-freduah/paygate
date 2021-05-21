@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/crypto-js": "^4.0.1",
+    "@types/dotenv": "^8.2.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "dotenv": "^9.0.2"
+  }
+}

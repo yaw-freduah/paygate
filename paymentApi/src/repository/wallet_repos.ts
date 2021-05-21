@@ -1,25 +1,7 @@
 import firebase from'firebase';
-import { appendFile } from 'node:fs';
-
 let db=firebase.firestore();
-class UserRepository implements UserRepo{
-    GetAllTransanctions(userId: string): [Transaction] {
-        throw new Error("Method not implemented.");
-    }
+class StudentRepo {
    
-    FindByID(userID: string): UserAccount | Error {
-        throw new Error("Method not implemented.");
-    }
-    FindMerchantAccountByName(name: string): UserAccount | Error {
-        throw new Error("Method not implemented.");
-    }
-    Save(account: UserAccount): Error | null {
-        throw new Error
-        
-        ("Method not implemented.");
-    }
-
-
     SignIn(email:string,password:string){
         firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -34,17 +16,8 @@ class UserRepository implements UserRepo{
 
 
 
-class WalletRepository implements WalletRepo{
-    FindByID(walletID: string): Wallet | Error {
-        throw new Error("Method not implemented.");
-    }
-    FindByUserID(userID: string): Wallet | Error {
-        throw new Error("Method not implemented.");
-    }
-    Save(wallet: Wallet): Error {
-        throw new Error("Method not implemented.");
-    }
-
+class WalletRepository {
+  
 
 
 }
@@ -55,7 +28,7 @@ export class TransactionRepository implements TransactionRepo{
      transactionCollection =db.collection("transactions");
    async FindByID(txnID: string):Promise<Transaction> {
        try {
-           let transaction:Transaction
+           let transaction:T
         let result=await (await this.transactionCollection.doc(txnID).get()).data();
         transaction= result as Transaction
       return transaction;

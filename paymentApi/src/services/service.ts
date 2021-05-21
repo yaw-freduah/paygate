@@ -4,17 +4,17 @@ import types from 'node:util/types';
 import { nanoid} from 'nanoid';
 
 	 interface WalletService{
-		RegisterCustomer(cmd:RegisteredUser) :(string| Error)
-		RegisterMerchant(cmd:RegisteredMerchant) :(string| Error)
-		Topup(cmd:TopUp):(string| Error)
-		Pay(cmd :Payment) :(string| Error)
+	
 
 	}
 
 
+	 interface MomoService{}
+
+
 	interface ApiService {
-		MakeBankPayment(txn:Transaction):Transaction
-		MakeMoMoPayment(txn:Transaction):Transaction
+		MakeBankPayment(txn:Transaction,walletservice:WalletService):Transaction
+		MakeMoMoPayment(txn:Transaction,momoservice:MomoService):Transaction
 	}
 
 
@@ -45,7 +45,7 @@ import { nanoid} from 'nanoid';
 
 			findMerchantWallet(name: string):( Wallet| Error) {
 			let merchant= this.userRepo.FindMerchantAccountByName(name)
-			if (types.isNativeError(merchant)) {
+			if (types.isNativeError(merchant)) { 
 				console.error("Error cannot find merchant %s \n", merchant.message)
 				return merchant;
 			}else {
@@ -58,102 +58,103 @@ import { nanoid} from 'nanoid';
 
 
 
-		 Pay(cmd:Payment): string| Error {
-			let merchantWallet = this.findMerchantWallet(cmd.merchantId)
-			if (types.isNativeError(merchantWallet)  ) {
-				console.error("Error Pay cannot find merchant %s \n", merchantWallet.message);
-				return merchantWallet;
-			}
+		//  Pay(cmd:Payment): string| Error {
+		// 	let merchantWallet = this.findMerchantWallet(cmd.merchantId)
+		// 	if (types.isNativeError(merchantWallet)  ) {
+		// 		console.error("Error Pay cannot find merchant %s \n", merchantWallet.message);
+		// 		return merchantWallet;
+		// 	}
 
 		
 		
-			let customerWallet= this.walletRepo.FindByID(cmd.debitedWalletID)
-			if (types.isNativeError(customerWallet)){
-				console.error("Error Pay cannot find wallet %s \n", customerWallet.message)
-				return customerWallet;
+		// 	let customerWallet= this.walletRepo.FindByID(cmd.debitedWalletID)
+		// 	if (types.isNativeError(customerWallet)){
+		// 		console.error("Error Pay cannot find wallet %s \n", customerWallet.message)
+		// 		return customerWallet;
 				
-			}
+		// 	}
 		
-			let txnID:string = nanoid(8);
-			let txn = new Transaction(
-				  txnID,
-				  cmd.transactionType,
-				cmd.paymentMethod,
-				Status.processing,
-				cmd.Description,
-				Date.now().toString(),
-				cmd.Amount,
-				new DepositDetails( 
-				cmd.bank,
-				cmd.creditWalletID,
-				cmd.debitedWalletID,
-				),
-				null
-			 )
+		// 	let txnID:string = nanoid(8);
+		// 	let txn = new Transaction(
+		// 		  txnID,
+		// 		  cmd.transactionType,
+		// 		cmd.paymentMethod,
+		// 		Status.processing,
+		// 		cmd.Description,
+		// 		Date.now().toString(),
+		// 		cmd.Amount,
+		// 		new DepositDetails( 
+		// 		cmd.bank,
+		// 		cmd.creditWalletID,
+		// 		cmd.debitedWalletID,
+		// 		),
+		// 		null
+		// 	 )
 		
-			 this.transactionRepo.Save(txn); 
+		// 	 this.transactionRepo.Save(txn); 
 			
-		try {
+		// try {
 			
-			merchantWallet.creditBalance(cmd.Amount); 
+		// 	merchantWallet.creditBalance(cmd.Amount); 
 		   
-			this.walletRepo.Save(merchantWallet); 
+		// 	this.walletRepo.Save(merchantWallet); 
 		   
-			customerWallet.debitBalance(cmd.Amount); 
+		// 	customerWallet.debitBalance(cmd.Amount); 
 		   
-			this.walletRepo.Save(customerWallet); 
+		// 	this.walletRepo.Save(customerWallet); 
 		   
-			   return txnID
-		} catch (error) {
+		// 	   return txnID
+		// } catch (error) {
 			
-			throw error;
-		}
-		}
+		// 	throw error;
+		// }
+		// }
 		
-		 Topup(cmd:TopUp) :(string| Error) {
-			let wallet= this.walletRepo.FindByID(cmd.WalletID)
-			if (types.isNativeError(wallet)){
-				console.error("Error topup on find wallet %s \n", wallet.message)
-				return wallet
-			}
+		//  Topup(cmd:TopUp) :(string| Error) {
+		// 	let wallet= this.walletRepo.FindByID(cmd.WalletID)
+		// 	if (types.isNativeError(wallet)){
+		// 		console.error("Error topup on find wallet %s \n", wallet.message)
+		// 		return wallet
+		// 	}
 		
-			let txnID = nanoid(8)
-			let txn = new  Transaction(
-				txnID,
-				cmd.transactionType,
-			  cmd.paymentMethod,
-			  Status.processing,
-			  cmd.Description,
-			  Date.now().toString(),
-			  cmd.Amount,
-			  new DepositDetails( 
-			  cmd.bank,
-			  cmd.creditWalletID,
-			  ),
-			  null
-			)
+		// 	let txnID = nanoid(8)
+		// 	let txn = new  Transaction(
+		// 		txnID,
+		// 		cmd.transactionType,
+		// 		cmd.paymentMethod,
+
+		// 	  Status.processing,
+		// 	  cmd.Description,
+		// 	  Date.now().toString(),
+		// 	  cmd.Amount,
+		// 	  new DepositDetails( 
+		// 	  cmd.bank,
+		// 	  cmd.creditWalletID,
+		// 	  ),
+		// 	  null
+		// 	)
 		
-					 this.transactionRepo.Save(txn); 
+		// 			 this.transactionRepo.Save(txn); 
 		
-			wallet.creditBalance(cmd.Amount)
-		 this.walletRepo.Save(wallet);  
+		// 	wallet.creditBalance(cmd.Amount)
+		//  this.walletRepo.Save(wallet);  
 		
-			return txnID
-		}
+		// 	return txnID
+		// }
 		
-		RegisterCustomer(cmd :RegisteredUser): (string) {
-			let userID = nanoid(10)
+		// RegisterCustomer(cmd :RegisteredUser): (string) {
+		// 	let userID = nanoid(10)
 		
-			let account =new  UserAccount(
-				userID,
-				 cmd.name,
-			     cmd.email,
-			    UserType.user,
-				cmd.phoneNumber,
-			)
+		// 	let account =new  UserAccount(
+		// 		userID,
+		// 		 cmd.name,
+		// 	     cmd.email,
+		// 	    UserType.user,
+		// 		cmd.phoneNumber,
+		// 	)
 		
-			return this.createWallet(account)
-		}
+		// 	return this.createWallet(account)
+		// }
 		
 	 RegisterMerchant(cmd:RegisteredMerchant): (string) {
 			let userID = nanoid(10)
