@@ -1,7 +1,7 @@
 
 import AES from 'crypto-js/aes'
 import firebaseFirestore from 'firebase';
-	class Students  {
+	export class Students  {
 		id      :string;
 		name        :string;
 		course       :string;
@@ -19,12 +19,12 @@ import firebaseFirestore from 'firebase';
 		}
 	}
 
-		class Products {
+	export	class Products {
 			constructor(public price:number,
 				public stockNumber:number){}
 		}
 	
-	class Wallet  {
+		export	class Wallet  {
 		walletID :string;
 		name:string;
 		balance  :number;
@@ -87,7 +87,7 @@ import firebaseFirestore from 'firebase';
 	}
 
 
-	class Card {
+	export	class Card {
 		
 		constructor(public cardNumber:number,public cvv:string,public expiry:string,public name:string){
 		
@@ -127,11 +127,11 @@ import firebaseFirestore from 'firebase';
 		
 	}
 
-	class Transaction {
+	export	class Transaction {
 
 		transactionID   :string;
 		transactionType :TxnType;
-		client			:Students;
+		client			:;
 		paymentMethod	:paymentMethod;
 		status     		:Status;
 		userType		:UserType;
@@ -161,8 +161,10 @@ import firebaseFirestore from 'firebase';
 	}
 
 
+	
 
-	class Refund{
+
+	export	class Refund{
 		amount:number;
 		date:string;
 		status:Status;
@@ -185,12 +187,12 @@ import firebaseFirestore from 'firebase';
 	
 	
 
-	class BankDetails implements DepositDetails{
+		class BankDetails implements DepositDetails{
 		constructor(public walletId:string){}
 	}
 
 	class cardDetails implements DepositDetails{
-		constructor (){}
+		constructor (public cardNumber:string){}
 	}
 
 

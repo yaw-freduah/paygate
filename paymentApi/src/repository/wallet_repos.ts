@@ -1,5 +1,6 @@
 import firebase from'firebase';
 let db=firebase.firestore();
+
 class StudentRepo {
    
     SignIn(email:string,password:string){
@@ -64,7 +65,7 @@ export class TransactionRepository implements TransactionRepo{
     }
    async Save(txn: Transaction):Promise<void> {
         try {
-            await this.transactionCollection.add(Transaction);   
+            // await this.transactionCollection.add(Transaction);   
         } catch (error) {
             throw error;
         }
